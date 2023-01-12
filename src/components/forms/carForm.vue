@@ -3,43 +3,58 @@
     <template #title>Autoverzekering vergelijken</template>
 
     <template #content>
-        <p>
-            Replace me for input fields
-        </p>
+      <Form @submit="onSubmit">
 
-        <!-- LicensePlate -->
+        <licence-plate />
 
-        <!-- Zipcode -->
+        <postal-code />
 
-        <!-- Housenumber -->
+        <house-number />
 
-        <!-- Housenumber addition -->
+        <claim-free />
 
-        <!-- birthdate -->
+        <kilometrage />
 
-        <!-- ClaimFree years -->
-
-        <!-- Kilometrage -->
-
-        <div class="btn" @click="onSubmit">
+        <button class="btn">
             Vergelijken
-        </div>
+        </button>
+      </form>
     </template>
   </simple-card>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { Form, Field, ErrorMessage } from 'vee-validate';
 import SimpleCard from './simpleCard.vue';
+import LicencePlate from './LicencePlateField.vue';
+import PostalCode from './PostalCodeField.vue';
+import HouseNumber from './HouseNumberField.vue';
+import ClaimFree from './ClaimFreeField.vue';
+import Kilometrage from './KilometrageField.vue';
 
 @Options({
   components: {
     SimpleCard,
+    LicencePlate,
+    PostalCode,
+    HouseNumber,
+    ClaimFree,
+    Kilometrage,
+    Form,
+    Field,
+    ErrorMessage,
   },
 })
 export default class CarForm extends Vue {
-  onSubmit(): void {
+  onSubmit(Values): void {
+    const values = Values;
     console.log('Button is clicked');
+    values.licencePlate = values.licencePlate.replaceAll('-', '').toUpperCase();
+    values.postalCode = values.postalCode.replaceAll(' ', '').toUpperCase();
+
+    const url = new URLSearchParams(Values).toString();
+    window.history.replaceState(null, '', `?${url}`);
   }
 }
 </script>
@@ -61,7 +76,9 @@ export default class CarForm extends Vue {
         padding: 10px 10px;
         font-weight: 600;
         color: white;
-        border-radius: 4px;
+        border-radius: 2px;
+        border: none;
+        width: 100%;
         cursor: pointer;
         transition: .1s ease;
     }
@@ -69,4 +86,5 @@ export default class CarForm extends Vue {
     .btn:hover {
         background: #0ed642;
     }
+
 </style>
