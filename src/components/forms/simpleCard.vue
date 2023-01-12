@@ -1,6 +1,6 @@
 <template>
     <div class="simple-card">
-        <p class="simple-card__title">
+        <p class="simple-card__title" data-test="header">
             <slot name="title" />
         </p>
         <slot name="content" />
